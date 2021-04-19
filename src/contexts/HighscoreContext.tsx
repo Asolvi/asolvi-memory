@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Score } from "../Types";
 
 const dummyScores = [
-  { name: "AAA", moves: 10 },
   { name: "AAA", moves: 15 },
   { name: "AAA", moves: 20 },
   { name: "AAA", moves: 25 },
@@ -13,6 +12,7 @@ const dummyScores = [
   { name: "AAA", moves: 50 },
   { name: "AAA", moves: 55 },
   { name: "AAA", moves: 60 },
+  { name: "AAA", moves: 65 },
 ];
 
 interface HighScoreContextType {
