@@ -3,8 +3,7 @@ import Button from "@material-ui/core/Button";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { useScores } from "../contexts/HighscoreContext";
 import { Page } from "../Types";
-import { updateAppPage } from "../redux/actions";
-import { useDispatch } from "react-redux";
+import { usePage } from "../contexts/PageContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Highscore() {
   const classes = useStyles();
   const scoreContext = useScores();
-  const dispatch = useDispatch();
+  const { page, setPage } = usePage();
 
   return (
     <div className={classes.paper}>
@@ -47,7 +46,7 @@ export default function Highscore() {
 
       <Button
         variant="contained"
-        onClick={() => dispatch(updateAppPage(Page.Board))}
+        onClick={() => setPage(Page.Board)}
         endIcon={<ReplayIcon />}
       >
         Try again

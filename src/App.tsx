@@ -1,15 +1,12 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import "./App.css";
 import { HighscoreProvider } from "./contexts/HighscoreContext";
 import Board from "./pages/Board";
 import Highscore from "./pages/Highscores";
 import { Page } from "./Types";
-import { updateAppPage } from "./redux/actions";
-import { RootState } from "./redux/reducers";
-import { useDispatch } from "react-redux";
+import { usePage } from "./contexts/PageContext";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -47,16 +44,15 @@ const getTitle = (page: Page) => {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
-  const currentPage = useSelector((state: RootState) => state.appPage);
+  const pageContext = usePage();
 
   useEffect(() => {
-    document.title = getTitle(currentPage);
-  }, [currentPage]);
+    document.title = getTitle(pageContext.page);
+  }, [pageContext.page]);
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(updateAppPage(Page.Board));
+      pageContext.setPage(Page.Board);
     }, 3000);
   }, []);
 
@@ -73,7 +69,7 @@ const App = () => {
 
   return (
     <HighscoreProvider>
-      <div className="App">{getPage(currentPage)}</div>
+      <div className="App">{getPage(pageContext.page)}</div>
     </HighscoreProvider>
   );
 };

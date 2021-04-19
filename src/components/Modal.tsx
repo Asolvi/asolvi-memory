@@ -5,8 +5,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Page } from "../Types";
 import { useScores } from "../contexts/HighscoreContext";
-import { updateAppPage } from "../redux/actions";
-import { useDispatch } from "react-redux";
+import { usePage } from "../contexts/PageContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,7 +44,7 @@ interface SimpleModalProps {
 export default function SimpleModal(props: SimpleModalProps) {
   const classes = useStyles();
   const scoreContext = useScores();
-  const dispatch = useDispatch();
+  const { page, setPage } = usePage();
 
   const [name, setName] = useState("");
   const [helperText, setHelperText] = useState("");
@@ -55,7 +54,7 @@ export default function SimpleModal(props: SimpleModalProps) {
       setHelperText("Please provide a name");
     } else {
       scoreContext.addHighscore(name, props.moves);
-      dispatch(updateAppPage(Page.HighScore));
+      setPage(Page.HighScore);
     }
   };
 
