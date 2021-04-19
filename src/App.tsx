@@ -1,6 +1,6 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { HighscoreProvider } from "./contexts/HighscoreContext";
 import Board from "./pages/Board";
@@ -42,53 +42,35 @@ const getTitle = (page: Page) => {
   }
 };
 
-class App extends React.Component {
-  state = {
-    currentPage: Page.Welcome,
-  };
+const App = () => {
+  const [currentPage, setCurrentPage] = useState(Page.Welcome);
 
-  setCurrentPage = (page: Page) => {
-    this.setState({
-      currentPage: page,
-    });
-  };
-
-  componentDidMount() {
-    this.updateDocumentTitle();
-    setTimeout(() => {
-      this.setCurrentPage(Page.Board);
-    }, 3000);
-  }
-
-  componentDidUpdate(_: any, prevState: { currentPage: Page }) {
-    if (prevState.currentPage !== this.state.currentPage) {
-      this.updateDocumentTitle();
-    }
-  }
-
-  updateDocumentTitle() {
-    const { currentPage } = this.state;
+  useEffect(() => {
     document.title = getTitle(currentPage);
-  }
+  }, [currentPage]);
 
-  getPage = (page: Page) => {
+  useEffect(() => {
+    setTimeout(() => {
+      setCurrentPage(Page.Board);
+    }, 3000);
+  }, []);
+
+  const getPage = (page: Page) => {
     switch (page) {
       case Page.Board:
-        return <Board setPage={this.setCurrentPage} />;
+        return <Board setPage={setCurrentPage} />;
       case Page.HighScore:
-        return <Highscore setPage={this.setCurrentPage} />;
+        return <Highscore setPage={setCurrentPage} />;
       default:
         return <Welcome />;
     }
   };
 
-  render() {
-    return (
-      <HighscoreProvider>
-        <div className="App">{this.getPage(this.state.currentPage)}</div>
-      </HighscoreProvider>
-    );
-  }
-}
+  return (
+    <HighscoreProvider>
+      <div className="App">{getPage(currentPage)}</div>
+    </HighscoreProvider>
+  );
+};
 
 export default App;
