@@ -4,7 +4,7 @@
 
 ### Node.js
 
-Get Node.js with npm version 6 or higher [here](https://nodejs.org/en/download/)
+Get Node.js with npm version 6 or higher [here](https://nodejs.org/en/download/).
 
 ### Yarn
 
