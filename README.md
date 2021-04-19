@@ -1,4 +1,4 @@
-# Getting Started with React
+# React workshop
 
 ## Requirements
 
