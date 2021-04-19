@@ -10,11 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface BoardProps {
-  setPage: (page: Page) => void;
-}
-
-function Board(props: BoardProps) {
+function Board() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [moves, setMoves] = useState(0);
@@ -35,12 +31,7 @@ function Board(props: BoardProps) {
     <div>
       <h2 className={classes.header}>Moves: {moves}</h2>
       <CardGrid handleOpen={handleOpen} incrementMoves={incrementMoves} />
-      <SimpleModal
-        open={open}
-        moves={moves}
-        handleClose={handleClose}
-        setPage={props.setPage}
-      />
+      <SimpleModal open={open} moves={moves} handleClose={handleClose} />
     </div>
   );
 }

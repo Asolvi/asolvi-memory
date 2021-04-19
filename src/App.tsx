@@ -1,11 +1,14 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import "./App.css";
 import { HighscoreProvider } from "./contexts/HighscoreContext";
 import Board from "./pages/Board";
 import Highscore from "./pages/Highscores";
 import { Page } from "./Types";
+import { updateAppPage } from "./redux/actions";
+import { RootState } from "./redux/reducers";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -42,25 +45,23 @@ const getTitle = (page: Page) => {
   }
 };
 
-const App = () => {
-  const [currentPage, setCurrentPage] = useState(Page.Welcome);
-
+const App: React.FC<PropsFromRedux> = (props) => {
   useEffect(() => {
-    document.title = getTitle(currentPage);
-  }, [currentPage]);
+    document.title = getTitle(props.currentPage);
+  }, [props.currentPage]);
 
   useEffect(() => {
     setTimeout(() => {
-      setCurrentPage(Page.Board);
+      props.updateAppPage(Page.Board);
     }, 3000);
   }, []);
 
   const getPage = (page: Page) => {
     switch (page) {
       case Page.Board:
-        return <Board setPage={setCurrentPage} />;
+        return <Board />;
       case Page.HighScore:
-        return <Highscore setPage={setCurrentPage} />;
+        return <Highscore />;
       default:
         return <Welcome />;
     }
@@ -68,9 +69,23 @@ const App = () => {
 
   return (
     <HighscoreProvider>
-      <div className="App">{getPage(currentPage)}</div>
+      <div className="App">{getPage(props.currentPage)}</div>
     </HighscoreProvider>
   );
 };
 
-export default App;
+// Redux related:
+
+const mapStateToProps = (store: RootState) => ({
+  currentPage: store.appPage,
+});
+
+const mapToDispatch = {
+  updateAppPage,
+};
+
+type PropsFromRedux = ReturnType<typeof mapStateToProps> & typeof mapToDispatch;
+
+const connector = connect(mapStateToProps, mapToDispatch);
+
+export default connector(App);
